@@ -51,17 +51,14 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
-    // context
+     // Retrieve current context
     val context = LocalContext.current
-    // scope
+     // Coroutine scope for asynchronous operations
     val scope = rememberCoroutineScope()
-    // datastore
+     // DataStore instance
     val dataStore = StoreUserData(context)
 
-    val savedNameState = dataStore.getName.collectAsState(initial = "")
-    val savedEmailState = dataStore.getEmail.collectAsState(initial = "")
-    val savedIdState = dataStore.getId.collectAsState(initial = "")
-
+    // State variables for user input fields
     var email by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
     var id by remember { mutableStateOf("") }
@@ -101,6 +98,8 @@ fun MainScreen() {
             label = { Text(text = "ID", color = Color.Gray, fontSize = 12.sp) },
         )
         Spacer(modifier = Modifier.height(15.dp))
+                
+        // Row containing buttons
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
@@ -112,6 +111,7 @@ fun MainScreen() {
                 onClick = {
                     //launch the class in a coroutine scope
                     scope.launch {
+                        // Save data to DataStore
                         dataStore.saveData(name, email, id)
                         // Clear input fields after saving
                         name = ""
@@ -120,7 +120,7 @@ fun MainScreen() {
                     }
                 },
             ) {
-                // button text
+                // Save button text
                 Text(
                     text = "Save",
                     color = Color.White,
@@ -143,7 +143,7 @@ fun MainScreen() {
                     }
                 },
             ) {
-                // button text
+                // Load button text
                 Text(
                     text = "Load",
                     color = Color.White,
@@ -159,6 +159,7 @@ fun MainScreen() {
                     // Clear data from DataStore
                     scope.launch {
                         dataStore.clearData()
+                        // Clear input fields
                         name = ""
                         email = ""
                         id = ""
@@ -182,7 +183,7 @@ fun MainScreen() {
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun DefaultPreview() {
     MAPD721A1AnmolSharmaTheme {
         MainScreen()
     }
