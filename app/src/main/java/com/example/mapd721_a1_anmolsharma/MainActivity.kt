@@ -113,6 +113,10 @@ fun MainScreen() {
                     //launch the class in a coroutine scope
                     scope.launch {
                         dataStore.saveData(name, email, id)
+                        // Clear input fields after saving
+                        name = ""
+                        email = ""
+                        id = ""
                     }
                 },
             ) {
@@ -131,7 +135,11 @@ fun MainScreen() {
                 onClick = {
                     // Load data from DataStore
                     scope.launch {
-                        dataStore.loadData()
+                        val (loadedName, loadedEmail, loadedId) = dataStore.loadData()
+                        // Update input fields with loaded data
+                        name = loadedName ?: ""
+                        email = loadedEmail ?: ""
+                        id = loadedId ?: ""
                     }
                 },
             ) {
